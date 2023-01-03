@@ -10,9 +10,9 @@
         label-position="left"
     >
       <el-card>
-        <div class="title-container">
+        <div class="title-container">          
           <img
-              src="@/assets/images/logo.png"
+              :src="publicPath"
               alt="ico"
               height="150"
               width="150"
@@ -275,7 +275,7 @@ export default {
       redirect: undefined,
       otherQuery: {},
       isForgotPass: false,
-      publicPath: `${process.env.VUE_APP_LOGO}` || require("@/assets/images/logo.png") || `${process.env.VUE_APP_FE_LIB }assets/images/logo.png`
+      publicPath: `${process.env.VUE_APP_LOGO}` || `${process.env.VUE_APP_FE_LIB }assets/images/logo.png`
     }
   },
   props: {
