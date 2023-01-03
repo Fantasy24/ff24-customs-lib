@@ -1,5 +1,5 @@
 <template>
-  <el-card style="margin-bottom:20px;">
+  <el-card style="margin-bottom: 20px">
     <div slot="header" class="clearfix">
       <span>THÔNG TIN</span>
     </div>
@@ -10,6 +10,7 @@
           :height="'150px'"
           :hoverable="false"
           :width="'150px'"
+          :image="userInfo.avatar"
         >
           <div>Xin chào</div>
           {{ userInfo.ufn }}
@@ -23,15 +24,12 @@
     <div class="userInfo-bio">
       <div class="userInfo-skills userInfo-bio-section">
         <div class="userInfo-bio-section-header">
-          <svg-icon icon-class="skill"/>
+          <svg-icon icon-class="skill" />
           <span>{{ userInfo.orgName }}</span>
         </div>
 
         <div class="userInfo-bio-section-body">
-          <el-form
-            ref="form"
-            label-width="90px"
-          >
+          <el-form ref="form" label-width="90px">
             <el-form-item label="Phòng ban:">
               <span>{{ userInfo.depName }}</span>
             </el-form-item>
@@ -46,16 +44,21 @@
 </template>
 
 <script>
-import PanThumb from '../../../components/PanThumb/index.vue'
-import {mapGetters} from 'vuex'
+import PanThumb from "../../../components/PanThumb/index.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'UserCard',
+  name: "UserCard",
   components: { PanThumb },
+  data() {
+    return {
+      srcAvatar: "", //"data:image/png;base64,".concat(userInfo.avatar),
+    };
+  },
   computed: {
-    ...mapGetters(['userInfo'])
-  }
-}
+    ...mapGetters(["userInfo"]),
+  },
+};
 </script>
 
 <style lang="scss" scoped>

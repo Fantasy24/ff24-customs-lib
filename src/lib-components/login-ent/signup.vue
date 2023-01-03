@@ -1,23 +1,21 @@
 <template>
-  <el-form
+  <div class="login-container">
+    <el-form
       ref="signUpForm"
       :model="signUpForm"
       :rules="signUpRule"
       class="login-form"
       label-position="left"
-  >
-    <el-card>
-      <div class="title-container">
-        <h3 class="title">ĐĂNG KÝ DOANH NGHIỆP</h3>
-        <el-tooltip
-            :content="$t('login.changeLang')"
-            placement="top"
-        >
-          <lang-select :i18n="i18n" :store="store" class="set-language"/>
-        </el-tooltip>
-      </div>
+    >
+      <el-card>
+        <div class="title-container">
+          <h3 class="title">ĐĂNG KÝ HUNRE</h3>
+          <!-- <el-tooltip :content="$t('login.changeLang')" placement="top">
+            <lang-select :i18n="i18n" :store="store" class="set-language" />
+          </el-tooltip> -->
+        </div>
 
-      <el-form-item prop="code">
+        <!-- <el-form-item prop="code">
           <span class="svg-container">
            <svg-icon icon-class="suitcase"/>
           </span>
@@ -34,83 +32,88 @@
             @keypress.native="onPreventChar"
             @keyup.enter.native="onSignUp"
         />
-      </el-form-item>
+      </el-form-item> -->
 
-      <el-form-item>
+        <el-form-item prop="code">
           <span class="svg-container">
-            <svg-icon icon-class="user"/>
+            <svg-icon icon-class="user" />
           </span>
-        <el-input
+          <el-input
             id="username"
-            readonly
             v-model="signUpForm.code"
-            :disabled="true"
-            :placeholder="$t('signUp.username')"
-        />
-      </el-form-item>
+            placeholder="Tên đăng nhập"
+          />
+        </el-form-item>
 
-      <!--  password    -->
-      <el-tooltip
+        <!--  password    -->
+        <el-tooltip
           v-model="capsTooltip"
           :content="$t('login.checkCaplock')"
           manual
           placement="right"
-      >
-        <el-form-item prop="password">
+        >
+          <el-form-item prop="password">
             <span class="svg-container">
-              <svg-icon icon-class="password"/>
+              <svg-icon icon-class="password" />
             </span>
-          <el-input
+            <el-input
               id="password"
               :key="passwordType"
               ref="password"
               v-model="signUpForm.password"
               :maxlength="50"
-              :placeholder="$t('login.password')"
+              placeholder="Mật khẩu"
               :type="passwordType"
               autocomplete="on"
               name="password"
               tabindex="2"
               @blur="capsTooltip = false"
-              @input="v => {
-                  signUpForm.password = v.replace(/[^\u0000-\u007F]+/g, '').replace(/\s/g, '');
-                }"
+              @input="
+                (v) => {
+                  signUpForm.password = v
+                    .replace(/[^\u0000-\u007F]+/g, '')
+                    .replace(/\s/g, '');
+                }
+              "
               @keyup.native="checkCapslock"
               @keyup.enter.native="onSignUp"
-          />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"/>
-            <el-tooltip
-                effect="light"
-                placement="bottom-end"
-            >
-              <div slot="content">
-                <rule-change-pass/>
-              </div>
-              <el-icon class="el-icon-warning-outline" style="margin-left: 15px"/>
-            </el-tooltip>
-          </span>
-        </el-form-item>
-      </el-tooltip>
+            />
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon
+                :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+              />
+              <el-tooltip effect="light" placement="bottom-end">
+                <div slot="content">
+                  <rule-change-pass />
+                </div>
+                <el-icon
+                  class="el-icon-warning-outline"
+                  style="margin-left: 15px"
+                />
+              </el-tooltip>
+            </span>
+          </el-form-item>
+        </el-tooltip>
 
-      <el-form-item prop="name">
+        <el-form-item prop="name">
           <span class="svg-container">
-           <svg-icon icon-class="suitcase"/>
+            <svg-icon icon-class="fullname" />
           </span>
-        <el-input
+          <!-- <i class="el-icon-s-custom"></i> -->
+          <el-input
             id="name"
             ref="name"
             v-model="signUpForm.name"
             :maxlength="255"
-            :placeholder="$t('signUp.taxName')"
+            placeholder="Họ và tên"
             name="name"
             tabindex="3"
             type="text"
             @keyup.enter.native="onSignUp"
-        />
-      </el-form-item>
+          />
+        </el-form-item>
 
-      <el-form-item prop="address">
+        <!-- <el-form-item prop="address">
           <span class="svg-container">
            <svg-icon icon-class="guide"/>
           </span>
@@ -125,43 +128,55 @@
             type="text"
             @keyup.enter.native="onSignUp"
         />
-      </el-form-item>
+      </el-form-item> -->
 
-      <el-form-item prop="email">
+        <el-form-item prop="email">
           <span class="svg-container">
-           <svg-icon icon-class="email"/>
+            <svg-icon icon-class="email" />
           </span>
-        <el-input
+          <el-input
             id="email"
             ref="email"
             v-model="signUpForm.email"
             :maxlength="254"
-            :placeholder="$t('signUp.email')"
+            placeholder="Email"
             name="email"
             tabindex="5"
             @keyup.enter.native="onSignUp"
-        />
-      </el-form-item>
+          />
+        </el-form-item>
 
-      <el-form-item prop="tel">
+        <el-form-item prop="tel">
           <span class="svg-container">
-           <svg-icon icon-class="phone"/>
+            <svg-icon icon-class="phone" />
           </span>
-        <el-input
+          <el-input
             id="tel"
             ref="tel"
             v-model="signUpForm.tel"
             :maxlength="15"
-            :placeholder="$t('signUp.phone')"
+            placeholder="Số điện thoại"
             name="tel"
             tabindex="6"
             type="text"
             @keypress.native="onPreventChar"
             @keyup.enter.native="onSignUp"
+          />
+        </el-form-item>
+        <select-master-data
+          :is-show-option-all="false"
+          :v-model.sync="signUpForm.depCode"
+          label="Khoa"
+          placeholder="Khoa"
+          prop-form="depCode"
+          :required="true"
+          :disabled="false"
+          :rules="ruleLabDepartment"
+          :is-filter="true"
+          :filter-data="masterTypeLabDepartment"
+          @keyup.enter.native="onSignUp"
         />
-      </el-form-item>
-
-      <el-form-item prop="bussDate">
+        <!-- <el-form-item prop="bussDate">
           <span class="svg-container">
            <svg-icon icon-class="form"/>
           </span>
@@ -202,9 +217,9 @@
           >
           </el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
 
-      <el-row :gutter="10">
+        <!-- <el-row :gutter="10">
         <el-col :span="12">
           <el-form-item prop="captchaKey">
               <span class="svg-container">
@@ -232,157 +247,243 @@
               @click="refreshCaptcha"
           >
         </el-col>
-      </el-row>
-      <el-button
+      </el-row> -->
+        <el-button
           id="btnSignUp"
           :loading="loading"
-          style="width:100%;margin-bottom:30px;"
+          style="width: 100%; margin-bottom: 30px"
           type="primary"
           tabindex="9"
           @click.native.prevent="onSignUp"
-      >
-        <span>{{ $t('signUp.signUp') }}</span>
-      </el-button>
-
-      <div style="float: left">
-        <el-button id="isSignUp" size="" default type="text" @click="onBackLogin" icon="el-icon-back">
-          <span>{{ $t('login.backToLogin') }}</span>
+        >
+          <span>Đăng ký</span>
         </el-button>
-      </div>
-    </el-card>
-  </el-form>
+
+        <div style="float: left">
+          <router-link to="/login">
+            <el-button
+              id="isSignUp"
+              size=""
+              default
+              type="text"
+              icon="el-icon-back"
+            >
+              <span>Đăng nhập</span>
+            </el-button>
+          </router-link>
+        </div>
+      </el-card>
+    </el-form>
+  </div>
 </template>
 
 <script>
-import {errAlert, ERROR, showAlert, SUCCESS} from 'ff24-js/src/utils/AlertMessage';
-import apiFactory from 'ff24-js/src/api/apiFactory';
-import LangSelect from '../../components/LangSelect/index.vue';
-import ConstantAPI from 'ff24-js/src/utils/ConstantAPI';
-import RuleChangePass from '../BaseFormCustoms/RuleChangePass.vue';
-import {validateOrgCode, validatePassword, validateCaptcha} from "ff24-js/src/utils/LoginValidate";
+import {
+  errAlert,
+  ERROR,
+  showAlert,
+  SUCCESS,
+} from "ff24-js/src/utils/AlertMessage";
+import apiFactory from "ff24-js/src/api/apiFactory";
+import LangSelect from "../../components/LangSelect/index.vue";
+import ConstantAPI from "ff24-js/src/utils/ConstantAPI";
+import RuleChangePass from "../BaseFormCustoms/RuleChangePass.vue";
+import SelectMasterData from "@/components/CommonComponent/SelectMasterData";
+import {
+  validateUsername,
+  validatePassword,
+  validateCaptcha,
+} from "ff24-js/src/utils/LoginValidate";
+
+const MASTER_DATA_LAB_DEPARTMENT = "LAB_DEPARTMENT";
 
 export default {
-  name: 'SignUp',
-  components: {LangSelect, RuleChangePass},
+  name: "SignUp",
+  components: { LangSelect, RuleChangePass, SelectMasterData },
   data() {
     return {
-      codeCaptcha: '',
+      codeCaptcha: "",
+      masterTypeLabDepartment: MASTER_DATA_LAB_DEPARTMENT,
       signUpForm: {
-        address: '',
-        bussDate: '',
-        captchaKey: '',
-        captchaSecret: '',
-        code: '',
-        email: '',
-        name: '',
-        password: '',
-        tel: '',
-        type: ''
+        address: "",
+        bussDate: "",
+        captchaKey: "",
+        captchaSecret: "",
+        code: "",
+        email: "",
+        name: "",
+        password: "",
+        tel: "",
+        type: "",
       },
+      ruleLabDepartment: [this.requiredRule("Khoa")],
       signUpRule: {
-        code: [{required: true, validator: validateOrgCode, trigger: 'change'}],
-        name: [{required: true, message: this.$t('signUp.validTaxName'), trigger: 'change'}],
-        type: [{required: true, message: this.$t('signUp.validType'), trigger: 'change'}],
-        address: [{required: true, message: this.$t('signUp.validAddress'), trigger: 'change'}],
-        tel: [{required: true, message: this.$t('signUp.validPhone'), trigger: 'change'}],
-        bussDate: [{required: true, message: this.$t('signUp.validBussDate'), trigger: 'change'}],
-        email: [
-          {required: true, message: this.$t('signUp.validRequireEmail'), trigger: 'change'},
-          {type: 'email', message: this.$t('signUp.validEmail'), trigger: ['blur', 'change']}
+        code: [
+          { required: true, validator: validateUsername, trigger: "change" },
         ],
-        password: [{required: true, validator: validatePassword, trigger: 'change'}],
-        captchaKey: [{required: true, validator: validateCaptcha, trigger: 'change'}]
+        name: [
+          {
+            required: true,
+            message: "Nhập họ và tên",
+            trigger: "change",
+          },
+        ],
+        type: [
+          {
+            required: true,
+            message: this.$t("signUp.validType"),
+            trigger: "change",
+          },
+        ],
+        address: [
+          {
+            required: true,
+            message: this.$t("signUp.validAddress"),
+            trigger: "change",
+          },
+        ],
+        tel: [
+          {
+            required: true,
+            message: "Nhập số điện thoại",
+            trigger: "change",
+          },
+        ],
+        bussDate: [
+          {
+            required: true,
+            message: this.$t("signUp.validBussDate"),
+            trigger: "change",
+          },
+        ],
+        email: [
+          {
+            required: true,
+            message: "Nhập địa chỉ email",
+            trigger: "change",
+          },
+          {
+            type: "email",
+            message: this.$t("signUp.validEmail"),
+            trigger: ["blur", "change"],
+          },
+        ],
+        password: [
+          { required: true, validator: validatePassword, trigger: "change" },
+        ],
+        captchaKey: [
+          { required: true, validator: validateCaptcha, trigger: "change" },
+        ],
       },
-      passwordType: 'password',
+      passwordType: "password",
       capsTooltip: false,
       loading: false,
       otherQuery: {},
       isSignUp: false,
       listCompanyType: [],
       loadType: false,
-      publicPath: process.env.BASE_URL
+      publicPath: process.env.BASE_URL,
     };
   },
   props: {
     store: {
       type: Object,
       required: true,
-      default: () => {
-      }
+      default: () => {},
     },
     router: {
       type: Object,
       required: true,
-      default: () => {
-      }
+      default: () => {},
     },
     i18n: {
       type: Object,
       required: true,
-      default: () => {
-      }
+      default: () => {},
     },
     $t: {
       type: Function,
       required: true,
-      default: () => {
-      }
-    }
+      default: () => {},
+    },
   },
   mounted() {
-    this.refreshCaptcha();
-    this.onGetListCompanyType();
+    // this.refreshCaptcha();
+    // this.onGetListCompanyType();
   },
   methods: {
     onSignUp() {
-      this.$refs.signUpForm.validate(valid => {
+      this.$refs.signUpForm.validate((valid) => {
         if (!valid) {
           this.$refs.code.focus();
           return false;
         }
         const loading = this.$loading({
           lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
+          text: "Loading",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.7)",
         });
-        apiFactory.callAPI(ConstantAPI.SIGNUP.SIGN_UP, this.signUpForm).then(rs => {
-          showAlert(this, SUCCESS, `Đăng ký thành công tài khoản [${rs.code}]`, 5000);
-          const loginForm = {
-            username: rs.code,
-            password: this.signUpForm.password,
-            orgCode: rs.code
-          };
-          this.resetForm();
-          this.onBackLogin();
-          this.$emit('signUpSuccess', loginForm);
-          loading.close();
-        }).catch(err => {
-          loading.close();
-          this.refreshCaptcha();
-          errAlert(this, err);
-        });
+        //Convert Model
+        const signupModel = {};
+        signupModel.fullName = this.signUpForm.name;
+        signupModel.username = this.signUpForm.code;
+        signupModel.password = this.signUpForm.password;
+        signupModel.phoneNumber = this.signUpForm.tel;
+        signupModel.email = this.signUpForm.email;
+        signupModel.isGuest = true;
+        signupModel.depCode = this.signUpForm.depCode;
+
+        const contentNotify =
+          `Bạn đã đăng ký tài khoản [<b>` +
+          signupModel.username +
+          `</b>] <p> Chúng tôi đã gửi một email xác nhận vào email của bạn. Bạn cần truy cập vào email của bạn kích hoạt để có thể sử dụng được dịch vụ </p>`;
+        apiFactory
+          .callAPI(ConstantAPI.SIGNUP.SIGN_UP, signupModel)
+          .then((rs) => {
+            showAlert(this, SUCCESS, contentNotify, 6000, true);
+            const loginForm = {
+              username: rs.code,
+              password: this.signUpForm.password,
+              orgCode: rs.code,
+            };
+            this.resetForm();
+            this.onBackLogin();
+            this.$emit("signUpSuccess", loginForm);
+            loading.close();
+          })
+          .catch((err) => {
+            loading.close();
+            this.refreshCaptcha();
+            errAlert(this, err);
+          });
       });
     },
 
     onGetListCompanyType() {
       this.loadType = true;
-      apiFactory.callAPI(ConstantAPI.SIGNUP.GET_COMPANY_TYPE).then(rs => {
-        this.listCompanyType = rs;
-        this.loadType = false;
-      }).catch(() => {
-        this.loadType = false;
-        showAlert(this, ERROR, 'Lỗi danh sách loại hình doanh nghiệp');
-      });
+      apiFactory
+        .callAPI(ConstantAPI.SIGNUP.GET_COMPANY_TYPE)
+        .then((rs) => {
+          this.listCompanyType = rs;
+          this.loadType = false;
+        })
+        .catch(() => {
+          this.loadType = false;
+          showAlert(this, ERROR, "Lỗi danh sách loại hình doanh nghiệp");
+        });
     },
 
     refreshCaptcha() {
-      apiFactory.callAPI(ConstantAPI.ACCOUNT_CHANGE.GET_CAPTCHA).then(rs => {
-        this.codeCaptcha = rs['captchaImage'];
-        this.signUpForm.captchaSecret = rs.captchaSecret;
-      }).catch(err => {
-        errAlert(this, err);
-      });
+      apiFactory
+        .callAPI(ConstantAPI.ACCOUNT_CHANGE.GET_CAPTCHA)
+        .then((rs) => {
+          this.codeCaptcha = rs["captchaImage"];
+          this.signUpForm.captchaSecret = rs.captchaSecret;
+        })
+        .catch((err) => {
+          errAlert(this, err);
+        });
     },
 
     onKeyupCaptcha() {
@@ -390,15 +491,15 @@ export default {
     },
 
     checkCapslock(e) {
-      const {key} = e;
-      this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z');
+      const { key } = e;
+      this.capsTooltip = key && key.length === 1 && key >= "A" && key <= "Z";
     },
 
     showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = '';
+      if (this.passwordType === "password") {
+        this.passwordType = "";
       } else {
-        this.passwordType = 'password';
+        this.passwordType = "password";
       }
       this.$nextTick(() => {
         this.$refs.password.focus();
@@ -406,20 +507,20 @@ export default {
     },
 
     onPreventChar($event) {
-      const keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+      const keyCode = $event.keyCode ? $event.keyCode : $event.which;
       if (keyCode !== 45 && (keyCode < 48 || keyCode > 57)) {
         $event.preventDefault();
       }
     },
 
     onBackLogin() {
-      this.$emit('back', false);
+      this.$emit("back", false);
     },
 
     resetForm() {
       this.$refs.signUpForm.resetFields();
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -455,7 +556,7 @@ $disableBg: #e5e5e5;
       &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
         box-shadow: inset 0 0 0 1000px #e5e5e5 !important;
-        -webkit-text-fill-color: #043244 !important
+        -webkit-text-fill-color: #043244 !important;
       }
     }
 
@@ -474,7 +575,7 @@ $disableBg: #e5e5e5;
     margin-bottom: 20px !important;
 
     .el-form-item__error--inline {
-      top: -8px !important
+      top: -8px !important;
     }
 
     .el-select {
@@ -486,28 +587,29 @@ $disableBg: #e5e5e5;
       }
     }
   }
-
 }
-
 </style>
 
 <style lang="scss" scoped>
 $bg: #ffffff;
-$dark_gray: #1682e6;
-$light_gray: #043244;
+// $dark_gray: #1682e6;
+// $light_gray: #043244;  #17f001;
+$dark_gray: #67c23a;
+$light_gray: #67c23a;
 
 .login-container {
   min-height: 100%;
   width: 100%;
   background-color: $bg;
-  background-image: linear-gradient(#01aef0, #ffffff);
+  // background-image: linear-gradient(#01aef0, #ffffff);
+  background-image: linear-gradient(#67c23a, #ffffff);
   overflow: hidden;
 
   .login-form {
     position: relative;
     width: 750px;
     max-width: 100%;
-    padding: 40px 85px 0px !important;
+    padding: 30px 30px 30px;
     margin: 0 auto;
     overflow: hidden;
   }
@@ -545,8 +647,10 @@ $light_gray: #043244;
     }
 
     .set-language {
-      color: #01aef0;
-      background-color: #01aef0;
+      /* color: #01aef0; 
+        background-color: #01aef0;*/
+      color: #67c23a;
+      background-color: #67c23a;
       position: absolute;
       top: 3px;
       font-size: 18px;
@@ -563,6 +667,12 @@ $light_gray: #043244;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+
+  .thirdparty-button {
+    position: absolute;
+    right: 0;
+    bottom: 6px;
   }
 
   @media only screen and (max-width: 470px) {
